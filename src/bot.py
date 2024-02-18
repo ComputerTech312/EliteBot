@@ -1,18 +1,21 @@
 #!/usr/bin/env python3
 
+import importlib.util
+import inspect
+import json
+import os
 import socket
 import ssl
-import time
-import json
-import yaml
-import inspect
 import sys
-import os
-import importlib.util
+import time
+
+import yaml
+
 from src.channel_manager import ChannelManager
 from src.logger import Logger
 from src.plugin_base import PluginBase
 from src.sasl import handle_sasl, handle_authenticate, handle_903
+
 
 class Bot:
     def __init__(self, config_file):
