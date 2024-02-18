@@ -1,0 +1,18 @@
+{
+    "Connection": {
+        "Hostname": "irc.rizon.net",
+        "Port": "+6697",
+        "Nick": "EliteBot",
+        "Ident": "EliteBot",
+        "Name": "EliteBot",
+        "BindHost": "0.0.0.0"
+    },
+    "SASL": {
+        "UseSASL": true,
+        "SASLNick": "EliteBot",
+        "SASLPassword": "789abc//"
+    },
+    "Logging": {
+        "Console": true
+    }
+}
