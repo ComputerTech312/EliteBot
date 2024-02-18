@@ -1,15 +1,16 @@
-from src.plugin_base import PluginBase
-from src.channel_manager import ChannelManager
 import sys
 
+from src.channel_manager import ChannelManager
+from src.plugin_base import PluginBase
+
+
 class Plugin(PluginBase):
-        
     def handle_message(self, source_nick, channel, message):
         message_parts = message.split()
-        self.channel_manager = ChannelManager()  
+        self.channel_manager = ChannelManager()
         if message_parts[0] == '!hello':
             self.bot.ircsend(f'PRIVMSG {channel} :Hello, {source_nick}!')
-   
+
         elif message_parts[0] == '!join':
             if len(message_parts) == 0:
                 self.bot.ircsend(f'PRIVMSG {channel} :Please specify a channel to join')
@@ -26,12 +27,11 @@ class Plugin(PluginBase):
                 self.bot.ircsend(f'PART {message_parts[1]}')
                 self.channel_manager.remove_channel(message_parts[1])
 
-
         elif message_parts[0] == "!quit":
             if len(message_parts) == 0:
                 quit_message = 'EliteBot!'
             else:
-                quit_message = message[len(message_parts[0])+1:]
+                quit_message = message[len(message_parts[0]) + 1:]
             self.bot.ircsend(f'QUIT :{quit_message}')
             self.bot.ircsock.close()
             self.bot.connected = False
@@ -44,7 +44,7 @@ class Plugin(PluginBase):
                 else:
                     raw_command = ' '.join(message_parts[1:])
                 self.bot.ircsend(raw_command)
-        
+
         elif message_parts[0] == '!me':
             if len(message_parts) > 1:
                 action_message = ' '.join(message_parts[1:])
