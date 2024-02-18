@@ -26,12 +26,14 @@ def handle_authenticate(args, config, ircsend):
     ircsend (function): Function to send IRC commands
     """
     if args[0] == '+':
-        if "SASLNick" in config['SASL'] and "SASLPassword" in config['SASL']:
-            authpass = f"{config['SASL']['SASLNick']}{NULL_BYTE}{config['SASL']['SASLNick']}{NULL_BYTE}{config['SASL']['SASLPassword']}"
+        if 'SASLNick' in config['SASL'] and 'SASLPassword' in config['SASL']:
+            authpass = (f'{config["SASL"]["SASLNick"]}{NULL_BYTE}'
+                        f'{config["SASL"]["SASLNick"]}{NULL_BYTE}'
+                        f'{config["SASL"]["SASLPassword"]}')
             ap_encoded = base64.b64encode(authpass.encode(ENCODING)).decode(ENCODING)
             ircsend(f'AUTHENTICATE {ap_encoded}')
         else:
-            raise KeyError("SASLNICK and/or SASLPASS not found in config")
+            raise KeyError('SASLNICK and/or SASLPASS not found in config')
 
 
 def handle_903(ircsend):

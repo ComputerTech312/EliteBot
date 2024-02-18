@@ -54,11 +54,11 @@ class Bot:
 
     def load_plugins(self):
         self.plugins = []
-        plugin_folder = "./plugins"
+        plugin_folder = './plugins'
         for filename in os.listdir(plugin_folder):
             if filename.endswith('.py'):
                 filepath = os.path.join(plugin_folder, filename)
-                spec = importlib.util.spec_from_file_location("module.name", filepath)
+                spec = importlib.util.spec_from_file_location('module.name', filepath)
                 module = importlib.util.module_from_spec(spec)
                 spec.loader.exec_module(module)
                 for name, obj in inspect.getmembers(module):
@@ -125,9 +125,10 @@ class Bot:
         try:
             self.ircsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-            if str(self.config["Connection"].get("Port"))[:1] == '+':
+            if str(self.config['Connection'].get('Port'))[:1] == '+':
                 context = ssl.create_default_context()
-                self.ircsock = context.wrap_socket(self.ircsock, server_hostname=self.config["Connection"].get("Hostname"))
+                self.ircsock = context.wrap_socket(self.ircsock,
+                                                   server_hostname=self.config['Connection'].get('Hostname'))
                 port = int(self.config['Connection'].get('Port')[1:])
             else:
                 port = int(self.config['Connection'].get('Port'))
@@ -138,7 +139,7 @@ class Bot:
             self.ircsock.connect_ex((self.config['Connection'].get('Hostname'), port))
             self.ircsend(f'NICK {self.config["Connection"].get("Nick")}')
             self.ircsend(f'USER {self.config["Connection"].get("Ident")} * * :{self.config["Connection"].get("Name")}')
-            if self.config["SASL"].get("UseSASL"):
+            if self.config['SASL'].get('UseSASL'):
                 self.ircsend('CAP REQ :sasl')
         except Exception as e:
             self.logger.error(f"Error establishing connection: {e}")
