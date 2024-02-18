@@ -4,6 +4,7 @@ import json
 import os
 from os import path
 
+
 class ChannelManager:
     def __init__(self):
         self.channels = self._load_channels()
@@ -25,13 +26,13 @@ class ChannelManager:
             return []
 
     def save_channel(self, channel):
-        channel = channel.lstrip(':')  
+        channel = channel.lstrip(':')
         if channel not in self.channels:
             self.channels.append(channel)
             self._write_channels()
 
     def remove_channel(self, channel):
-        channel = channel.lstrip(':') 
+        channel = channel.lstrip(':')
         if channel in self.channels:
             self.channels.remove(channel)
             self._write_channels()
