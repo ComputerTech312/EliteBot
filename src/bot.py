@@ -20,6 +20,7 @@ from src.sasl import handle_sasl, handle_authenticate, handle_903
 class Bot:
     def __init__(self, config_file):
         self.config = self.load_config(config_file)
+        self.validate_config(self.config)
         self.channel_manager = ChannelManager()
         self.logger = Logger('logs/elitebot.log')
         self.connected = False
@@ -27,8 +28,6 @@ class Bot:
         self.running = True
         self.plugins = []
         self.load_plugins()
-        self.config = self.load_config(config_file)
-        self.validate_config(self.config)
 
     def validate_config(self, config):
         required_fields = [
@@ -43,7 +42,7 @@ class Bot:
         for field in required_fields:
             if not self.get_nested_config_value(config, field):
                 raise ValueError(f'Missing required config field: {" -> ".join(field)}')
-            
+
     def get_nested_config_value(self, config, keys):
         value = config
         for key in keys:
@@ -97,7 +96,7 @@ class Bot:
         try:
             if msg != '':
                 self.logger.info(f'Sending command: {msg}')
-                self.ircsock.send(bytes(f'{msg}\r\n','UTF-8'))
+                self.ircsock.send(bytes(f'{msg}\r\n', 'UTF-8'))
         except Exception as e:
             self.logger.error(f'Error sending IRC message: {e}')
             raise
@@ -211,6 +210,7 @@ class Bot:
             except Exception as e:
                 self.logger.error(f'General error: {e}')
                 self.connected = False
+
 
 if __name__ == '__main__':
     try:
