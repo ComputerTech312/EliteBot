@@ -21,6 +21,7 @@ class Bot:
     def __init__(self, config_file):
         self.config = self.load_config(config_file)
         self.validate_config(self.config)
+        self.connection_string = self.config['Database'].get('ConnectionString')
         self.channel_manager = ChannelManager()
         self.logger = Logger('logs/elitebot.log')
         self.connected = False
@@ -36,7 +37,8 @@ class Bot:
             ["Connection", "Nick"],
             ["Connection", "Ident"],
             ["Connection", "Name"],
-            ["SASL", "UseSASL"]
+            # ["SASL", "UseSASL"],
+            ["Database", "ConnectionString"]
         ]
 
         for field in required_fields:

@@ -27,7 +27,7 @@ class Plugin(PluginBase):
                 self.bot.ircsend(f'PART {message_parts[1]}')
                 self.channel_manager.remove_channel(message_parts[1])
 
-        elif message_parts[0] == "!quit":
+        elif message_parts[0] == '!quit':
             if len(message_parts) == 0:
                 quit_message = 'EliteBot!'
             else:
@@ -37,9 +37,9 @@ class Plugin(PluginBase):
             self.bot.connected = False
             sys.exit()
 
-        elif message_parts[0] == "!raw":
+        elif message_parts[0] == '!raw':
             if len(message_parts) > 1:
-                if message_parts[1].upper() == "PRIVMSG" and len(message_parts) > 3:
+                if message_parts[1].upper() == 'PRIVMSG' and len(message_parts) > 3:
                     raw_command = ' '.join(message_parts[1:3]) + " :" + ' '.join(message_parts[3:])
                 else:
                     raw_command = ' '.join(message_parts[1:])

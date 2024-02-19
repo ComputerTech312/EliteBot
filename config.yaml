@@ -11,3 +11,5 @@ SASL:
   SASLPassword: password
 Logging:
   Console: true
+Database:
+  ConnectionString: mysql://user:password@host:port/database
