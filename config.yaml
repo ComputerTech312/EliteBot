@@ -6,9 +6,9 @@ Connection:
   Name: EliteBot
   BindHost: 0.0.0.0
 SASL:
-  UseSASL: false
+  UseSASL: true
   SASLNick: EliteBot
-  SASLPassword: password
+  SASLPassword: 789abc//
 Logging:
   Console: true
 Database:
