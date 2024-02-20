@@ -1,14 +1,15 @@
+VERSION: 1.0.0
 Connection:
   Hostname: irc.rizon.net
-  Port: "+6697"
+  Port: '+6697'
   Nick: EliteBot
   Ident: EliteBot
   Name: EliteBot
   BindHost: 0.0.0.0
 SASL:
-  UseSASL: true
+  UseSASL: false
   SASLNick: EliteBot
-  SASLPassword: 789abc//
+  SASLPassword: password
 Logging:
   Console: true
 Database:

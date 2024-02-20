@@ -25,7 +25,7 @@ class Logger:
             case 'error':
                 print(f'\033[91m[{asctime}] - {message}\033[39m')
             case _:
-                pass  # just ignore it.
+                pass
 
     def debug(self, message):
         self.log('debug', message)

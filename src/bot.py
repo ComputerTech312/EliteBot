@@ -8,7 +8,6 @@ import socket
 import ssl
 import sys
 import time
-
 import yaml
 
 from src.channel_manager import ChannelManager
@@ -32,18 +31,17 @@ class Bot:
 
     def validate_config(self, config):
         required_fields = [
-            ["Connection", "Port"],
-            ["Connection", "Hostname"],
-            ["Connection", "Nick"],
-            ["Connection", "Ident"],
-            ["Connection", "Name"],
-            # ["SASL", "UseSASL"],
-            ["Database", "ConnectionString"]
+            ['Connection', 'Port'],
+            ['Connection' 'Hostname'],
+            ['Connection', 'Nick'],
+            ['Connection', 'Ident'],
+            ['Connection', 'Name'],
+            ['Database', 'ConnectionString']
         ]
 
         for field in required_fields:
             if not self.get_nested_config_value(config, field):
-                raise ValueError(f'Missing required config field: {" -> ".join(field)}')
+                raise ValueError(f'Missing required config field: {' -> '.join(field)}')
 
     def get_nested_config_value(self, config, keys):
         value = config
@@ -92,7 +90,7 @@ class Bot:
             except UnicodeDecodeError:
                 continue
         self.logger.error('Could not decode byte string with any known encoding')
-        return bytes.decode('utf-8', 'ignore')  # Ignore errors and return as much as possible
+        return bytes.decode('utf-8', 'ignore')
 
     def ircsend(self, msg):
         try:
@@ -143,7 +141,7 @@ class Bot:
             if self.config['SASL'].get('UseSASL'):
                 self.ircsend('CAP REQ :sasl')
         except Exception as e:
-            self.logger.error(f"Error establishing connection: {e}")
+            self.logger.error(f'Error establishing connection: {e}')
             self.connected = False
             return
 
@@ -168,13 +166,11 @@ class Bot:
                 source, command, args = self.parse_message(ircmsg)
                 self.logger.debug(f'Received: source: {source} | command: {command} | args: {args}')
 
-                # Handle PING requests immediately
                 if command == 'PING':
                     nospoof = args[0][1:] if args[0].startswith(':') else args[0]
                     self.ircsend(f'PONG :{nospoof}')
                     continue
 
-                # Process other messages
                 if command == 'PRIVMSG':
                     channel, message = args[0], args[1]
                     source_nick = source.split('!')[0]
