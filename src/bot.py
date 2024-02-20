@@ -41,7 +41,7 @@ class Bot:
 
         for field in required_fields:
             if not self.get_nested_config_value(config, field):
-                raise ValueError(f'Missing required config field: {' -> '.join(field)}')
+                raise ValueError(f'Missing required config field: {" -> ".join(field)}')
 
     def get_nested_config_value(self, config, keys):
         value = config

@@ -1,6 +1,6 @@
 VERSION: 1.0.0
 Connection:
-  Hostname: irc.rizon.net
+  Hostname: irc.example.net
   Port: '+6697'
   Nick: EliteBot
   Ident: EliteBot
