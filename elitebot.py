@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
+import asyncio  # Added this import
 
 from src.bot import Bot
 
@@ -22,7 +23,7 @@ def main():
 
     try:
         print('EliteBot started successfully!')
-        bot.start()
+        asyncio.run(bot.start())  # Corrected here
     except Exception as e:
         print(f'Error starting EliteBot: {e}')
         sys.exit(1)
