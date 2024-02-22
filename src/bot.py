@@ -135,6 +135,7 @@ class Bot:
                 ssl=ssl_context
             )
 
+            await self.ircsend('CAP LS 302')
             await self.ircsend(f'NICK {self.config["Connection"].get("Nick")}')
             await self.ircsend(
                 f'USER {self.config["Connection"].get("Ident")} * * :{self.config["Connection"].get("Name")}')
@@ -177,6 +178,9 @@ class Bot:
                         self.logger.debug(f'Received: source: {source} | command: {command} | args: {args}')
 
                 match command:
+                    case 'CAP':
+                        if args[1] == 'ACK' and 'sasl' in args[2]:
+                            await handle_sasl(self.config, self.ircsend)
                     case 'PING':
                         nospoof = args[0][1:] if args[0].startswith(':') else args[0]
                         await self.ircsend(f'PONG :{nospoof}')
@@ -195,9 +199,6 @@ class Bot:
 
                         for plugin in self.plugins:
                             await plugin.handle_message(source_nick, channel, message)
-                    case 'CAP':
-                        if args[1] == 'ACK' and 'sasl' in args[2]:
-                            await handle_sasl(self.config, self.ircsend)
                     case 'AUTHENTICATE':
                         await handle_authenticate(args, self.config, self.ircsend)
                     case 'INVITE':
@@ -207,8 +208,9 @@ class Bot:
                     case 'VERSION':
                         await self.ircsend(f'NOTICE {source_nick} :I am a bot version 1.0.0')
                     case '001':
-                        for channel in self.channel_manager.get_channels():
-                            await self.ircsend(f'JOIN {channel}')
+                        await self.ircsend(f'JOIN #YuukiTest')
+                        # for channel in self.channel_manager.get_channels():
+                        #     await self.ircsend(f'JOIN {channel}')
                     case '903':
                         await handle_903(self.ircsend)
                     case _:
