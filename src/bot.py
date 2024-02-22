@@ -188,7 +188,8 @@ class Bot:
                         if message.startswith('&'):
                             cmd, *cmd_args = message[1:].split()
                             self.handle_command(source_nick, channel, cmd, cmd_args)
-                        elif args[1].startswith('\x01VERSION\x01'):
+
+                        if args[1].startswith('\x01VERSION\x01'):
                             source_nick = source.split('!')[0]
                             await self.ircsend(f'NOTICE {source_nick} :\x01VERSION EliteBot 0.1\x01')
 
