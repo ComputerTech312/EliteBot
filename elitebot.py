@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 
 import asyncio
+import os
 import sys
 
 from src.bot import Bot
 
 
 def main():
+    os.makedirs('data', exist_ok=True)
+
     if len(sys.argv) < 2:
         print('Usage: python elitebot.py <config_file>')
         sys.exit(1)
