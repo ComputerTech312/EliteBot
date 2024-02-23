@@ -208,9 +208,8 @@ class Bot:
                     case 'VERSION':
                         await self.ircsend(f'NOTICE {source_nick} :I am a bot version 1.0.0')
                     case '001':
-                        await self.ircsend(f'JOIN #YuukiTest')
-                        # for channel in self.channel_manager.get_channels():
-                        #     await self.ircsend(f'JOIN {channel}')
+                        for channel in self.channel_manager.get_channels():
+                            await self.ircsend(f'JOIN {channel[1]}')
                     case '903':
                         await handle_903(self.ircsend)
                     case _:
