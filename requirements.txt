@@ -1,0 +1,7 @@
+colorama==0.4.6
+greenlet==3.0.3
+mysql-connector==2.2.9
+PyYAML==6.0.1
+SQLAlchemy==2.0.27
+SQLAlchemy-Utils==0.41.1
+typing_extensions==4.9.0
