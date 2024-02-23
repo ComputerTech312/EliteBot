@@ -1,49 +1,30 @@
 #!/usr/bin/env python3
 
-import json
-import os
-from os import path
+from src.db import Database
+from sqlalchemy import Table, Column, Integer, String, Boolean, MetaData
+
+meta = MetaData()
+channel_table = Table(
+    'Channels',
+    meta,
+    Column('id', Integer, primary_key=True, autoincrement=True),
+    Column('channel', String, unique=True, nullable=False),
+    Column('autojoin', Boolean, default=True),
+)
+db = Database(channel_table, meta)
 
 
 class ChannelManager:
     def __init__(self):
-        self.channels = self._load_channels()
+        db.create_table(channel_table.name)
 
-    def _load_channels(self):
-        os.makedirs('data', exist_ok=True)
-        if not path.exists('data/channels.json'):
-            with open('data/channels.json', 'w') as f:
-                json.dump([], f)
-            return []
-        try:
-            with open('data/channels.json', 'r') as f:
-                return json.load(f)
-        except json.JSONDecodeError as e:
-            print(f'Error decoding JSON: {e}')
-            return []
-        except Exception as e:
-            print(f'Error loading channels: {e}')
-            return []
+        self.channels = db._load_channels()
 
     def save_channel(self, channel):
-        channel = channel.lstrip(':')
-        if channel not in self.channels:
-            self.channels.append(channel)
-            self._write_channels()
+        db._save_channel(channel)
 
     def remove_channel(self, channel):
-        channel = channel.lstrip(':')
-        if channel in self.channels:
-            self.channels.remove(channel)
-            self._write_channels()
-
-    def _write_channels(self):
-        os.makedirs('data', exist_ok=True)
-        try:
-            with open('data/channels.json', 'w') as f:
-                json.dump(self.channels, f)
-        except Exception as e:
-            print(f'Error saving channels: {e}')
+        db._remove_channel(channel)
 
     def get_channels(self):
         return self.channels
