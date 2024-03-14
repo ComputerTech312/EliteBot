@@ -1,5 +1,6 @@
 ![linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 ![mac](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=apple&logoColor=white)
+![windpws](https://shields.io/badge/Windows--9cf?logo=Windows&style=social)
 
 # IRC Bot
 
