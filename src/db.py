@@ -16,7 +16,7 @@ class Database:
         if not inspect(self.engine).has_table(table_name):
             self.meta.create_all(self.engine)
 
-    def set_user(self, user: str, values: dict):
+    def set_user_values(self, user: str, values: dict):
         with self.engine.connect() as conn:
             stmt = select(self.table).where(self.table.c.name == user)
             cnt = len(conn.execute(stmt).fetchall())
@@ -24,11 +24,22 @@ class Database:
             if cnt == 1:
                 conn.execute((
                     update(self.table).
-                    values(values)
+                    values(values).
+                    where(self.table.c.name == user)
                 ))
                 conn.commit()
 
-    def get_user(self, user: str, index: int):
+    def get_user_values(self, user: str):
+        with self.engine.connect() as conn:
+            stmt = select(self.table).where(self.table.c.name == user)
+            cnt = len(conn.execute(stmt).fetchall())
+
+            if cnt == 1:
+                return conn.execute(select(self.table).where(self.table.c.name == user)).fetchall()
+            else:
+                return -1
+
+    def get_user_value(self, user: str, index: int):
         with self.engine.connect() as conn:
             stmt = select(self.table).where(self.table.c.name == user)
             cnt = len(conn.execute(stmt).fetchall())

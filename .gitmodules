@@ -1,0 +1,3 @@
+[submodule "plugins"]
+	path = plugins
+	url = https://git.raiza.dev/Raiza.dev/EliteBot-Plugins.git

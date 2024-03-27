@@ -103,6 +103,15 @@ class Bot:
             self.logger.error(f'Error sending IRC message: {e}')
             raise
 
+    async def privmsg(self, target, msg):
+        await self.ircsend(f'PRIVMSG {target} :{msg}')
+
+    async def action(self, target, msg):
+        await self.ircsend(f'PRIVMSG {target} :\x01ACTION {msg}\x01')
+
+    async def notice(self, target, msg):
+        await self.ircsend(f'NOTICE {target} :{msg}')
+
     def parse_message(self, message):
         parts = message.split()
         if not parts:
@@ -135,10 +144,11 @@ class Bot:
                 ssl=ssl_context
             )
 
-            await self.ircsend('CAP LS 302')
+            if self.config['SASL'].get('UseSASL'):
+                await self.ircsend('CAP LS 302')
             await self.ircsend(f'NICK {self.config["Connection"].get("Nick")}')
-            await self.ircsend(
-                f'USER {self.config["Connection"].get("Ident")} * * :{self.config["Connection"].get("Name")}')
+            await self.ircsend(f'USER {self.config["Connection"].get("Ident")} * * :'
+                               f'{self.config["Connection"].get("Name")}')
             if self.config['SASL'].get('UseSASL'):
                 await self.ircsend('CAP REQ :sasl')
         except Exception as e:
@@ -146,12 +156,21 @@ class Bot:
             self.connected = False
             return
 
+    async def send_ping(self):
+        while True:
+            await asyncio.sleep(60)
+            await self.ircsend(f'PING :{self.config["Connection"].get("Hostname")}')
+            
     async def start(self):
+        ping_task = None
         while True:
             if not self.connected:
                 try:
                     await self.connect()
                     self.connected = True
+                    # Start the ping task after the bot has connected
+                    if ping_task is None or ping_task.done():
+                        ping_task = asyncio.create_task(self.send_ping())
                 except Exception as e:
                     self.logger.error(f'Connection error: {e}')
                     await asyncio.sleep(60)
