@@ -8,7 +8,7 @@ class PluginBase:
         self.bot = bot_instance
         self.commands = {}
 
-    def handle_message(self, source_nick, channel, message):
+    async def handle_message(self, source_nick, channel, message):
         """
         Called when a message is received.
 
@@ -17,6 +17,18 @@ class PluginBase:
         :param message: Content of the message
         """
         pass
+
+    async def handle_command(self, source_nick, channel, cmd, cmd_args):
+        """
+        Called when a command is received.
+
+        :param source_nick: Nickname of the user who sent the command
+        :param channel: Channel where the command was sent
+        :param cmd: The command name
+        :param cmd_args: List of command arguments
+        :return: True if command was handled, False otherwise
+        """
+        return False
 
     def on_connect(self):
         """

@@ -27,6 +27,17 @@ def main():
     try:
         print('EliteBot started successfully!')
         asyncio.run(bot.start())
+    except KeyboardInterrupt:
+        print('\nShutting down EliteBot...')
+        # Create a new event loop for shutdown if needed
+        try:
+            loop = asyncio.get_event_loop()
+        except RuntimeError:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+        
+        loop.run_until_complete(bot.shutdown())
+        print('EliteBot has been stopped.')
     except Exception as e:
         print(f'Error starting EliteBot: {e}')
         sys.exit(1)
@@ -39,3 +50,4 @@ if __name__ == '__main__':
         print('\nEliteBot has been stopped.')
     except Exception as e:
         print(f'An unexpected error occurred: {e}')
+        sys.exit(1)
